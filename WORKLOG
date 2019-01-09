@@ -46,3 +46,14 @@ Slightlying irritatingly, Go considers an empty list to be nil.  So if the JSON
 encoder encodes an empty list, it returns "null" rather than "[]".  While null
 can be acceptable in an object, it is not on its own.  So all the calls returns
 a JSON object.
+
+09/01 21:57
+To help me test the API, I build a front end in JavaScript and HTML, that calls
+the API directly.  It definitely helped me spotting some API errors, that would
+be harder to catch through unit test-like tests.
+
+09/01 22:11
+Since it was not in the specification, there is no authentication protection.
+Anyone can create an account if they have access to the server.  While this
+would paramount in a production environment, it's important to stick to the
+specification.
