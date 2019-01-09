@@ -40,3 +40,9 @@ the business, rather than the database.
 Despite the standard testing library being a bit too verbose, I've decided to
 stick with it, as my general principle of only using standard library, even
 though third party libraries exist to make testing less verbose.
+
+09/01 20:07
+Slightlying irritatingly, Go considers an empty list to be nil.  So if the JSON
+encoder encodes an empty list, it returns "null" rather than "[]".  While null
+can be acceptable in an object, it is not on its own.  So all the calls returns
+a JSON object.
