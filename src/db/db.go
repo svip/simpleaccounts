@@ -183,12 +183,12 @@ func DeleteTransaction(accountid int, transid time.Time) error {
 	
 	id := -1
 	for i, trans := range acc.Transactions {
-		if trans.Time == transid {
+		if trans.Time.Format(time.RFC3339Nano) == transid.Format(time.RFC3339Nano) {
 			id = i
 		}
 	}
 	if id == -1 {
-		return fmt.Errorf("No transaction with id (time) %x", transid)
+		return fmt.Errorf("No transaction with id (time) %s", transid)
 	}
 	
 	acc.Transactions = append(acc.Transactions[:id], acc.Transactions[id+1:]...)
