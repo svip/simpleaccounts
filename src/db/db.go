@@ -66,6 +66,7 @@ var database map[int]Account
 var mutex = &sync.Mutex{} // Our general database mutex.
 var savetofile bool
 const FILENAME = "database.json"
+const LOGFILE = "database.log"
 
 func save() error {
 	if !savetofile {
@@ -81,6 +82,18 @@ func save() error {
 		return err
 	}
 	return nil
+}
+
+func doLog(task string, input string) {
+	file, err := os.OpenFile(LOGFILE, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+	if err != nil {
+		log.Println("Error logging changes to database", err)
+	}
+	defer file.Close()
+	
+	msg := fmt.Sprintf("%s input: %s", task, input)
+	
+	file.Write([]byte(msg))
 }
 
 // EXPORTED FUNCTIONS
@@ -129,6 +142,8 @@ func CreateAccount(name string) Account {
 	
 	mutex.Unlock()
 	
+	doLog("CREATE ACCOUNT", name)
+	
 	return account
 }
 
@@ -173,6 +188,8 @@ func CreateTransaction(accountid int, amount Money, description string) (time.Ti
 	save()
 	mutex.Unlock()
 	
+	doLog("CREATE TRANSACTION", fmt.Sprintf("%s %s", amount.String(), description))
+	
 	return t, nil
 }
 
@@ -198,6 +215,8 @@ func DeleteTransaction(accountid int, transid time.Time) error {
 	database[accountid] = acc
 	save()
 	mutex.Unlock()
+	
+	doLog("DELETE TRANSACTION", transid.Format(time.RFC3339Nano))
 	
 	return nil
 }

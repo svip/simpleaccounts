@@ -7,10 +7,23 @@ import (
 	"encoding/json"
 	"log"
 	"strconv"
+	"os"
+	"fmt"
 )
 
+const LOGFILE = "access.log"
+
 func doLog(r *http.Request) {
-	log.Println(r.Method, r.URL)
+	s := fmt.Sprintf("%s %s\n", r.Method, r.URL)
+	log.Print(s)
+	file, err := os.OpenFile(LOGFILE, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+	if err != nil {
+		log.Println("Error logging", err)
+		return
+	}
+	defer file.Close()
+	
+	file.Write([]byte(s))
 }
 
 func getURLPath(r *http.Request, index int) (string, bool) {
