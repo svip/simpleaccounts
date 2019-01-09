@@ -17,7 +17,7 @@ function ajax(method, path, body, callback) {
 }
 
 function writeOutput(id, text) {
-	document.getElementById(id).innerHTML = text;
+	document.getElementById(id).innerHTML = JSON.stringify(eval('(' + text + ')'), null, 2);
 }
 
 function createAccount() {
@@ -59,6 +59,15 @@ function deleteTransaction() {
 	});
 }
 </script>
+<style>
+body { font-family: sans-serif; max-width: 600px; }
+fieldset { border: 1px solid #000; clear: both; }
+label, input { float: left; }
+label, button { clear: left; }
+label { width: 200px; margin-bottom: 5px; }
+button { float: right; }
+pre { background: #eee; min-height: 10px; margin: 0; padding: 3px 5px; max-height: 250px; overflow-y: scroll; }
+</style>
 </head>
 <body>
 <fieldset>
