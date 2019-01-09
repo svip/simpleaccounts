@@ -57,7 +57,7 @@ func TestCreateTransaction(t *testing.T) {
 	Init(true)
 	testacc := Account{1, "TestName", []Transaction{}}
 	CreateAccount(testacc.Name)
-	err := CreateTransaction(1, NewMoney(10.00), "Text1")
+	_, err := CreateTransaction(1, NewMoney(10.00), "Text1")
 	if err != nil {
 		t.Error("Expected no error, got ", err)
 	}

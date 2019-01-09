@@ -30,6 +30,10 @@ func (m Money) String() string {
 	return fmt.Sprintf("%0.2f", m.Float())
 } 
 
+func (m Money) IsZero() bool {
+	return int(m) == 0
+}
+
 type Transaction struct {
 	Time time.Time
 	Amount Money
@@ -154,20 +158,21 @@ func GetAccount(id int) (Account, error) {
 	}
 }
 
-func CreateTransaction(accountid int, amount Money, description string) error {
+func CreateTransaction(accountid int, amount Money, description string) (time.Time, error) {
 	acc, err := GetAccount(accountid)
+	t := time.Now()
 	if err != nil {
-		return err
+		return t, err
 	}
 	
-	acc.Transactions = append(acc.Transactions, Transaction{time.Now(), amount, description})
+	acc.Transactions = append(acc.Transactions, Transaction{t, amount, description})
 	
 	mutex.Lock()
 	database[accountid] = acc
 	save()
 	mutex.Unlock()
 	
-	return nil
+	return t, nil
 }
 
 func DeleteTransaction(accountid int, transid time.Time) error {
