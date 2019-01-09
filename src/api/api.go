@@ -72,7 +72,7 @@ func AccountEntry(w http.ResponseWriter, r *http.Request) {
 		})
 	} else if r.Method == "PUT" {
 		name, ok := getURLPath(r, 2)
-		if !ok {
+		if !ok || name == "" {
 			handleRawError(w, 400, "No name provided.")
 			return
 		}
@@ -94,6 +94,7 @@ func TransactionEntry(w http.ResponseWriter, r *http.Request) {
 		list, err := model.ListTransactions(accountid)
 		if err != nil {
 			handleError(w, 400, err)
+			return
 		}
 		returnJson(w, struct {
 			Transactions []model.ResultTransaction
@@ -113,10 +114,12 @@ func TransactionEntry(w http.ResponseWriter, r *http.Request) {
 		}
 		if err := dec.Decode(&input); err != nil {
 			handleError(w, 400, err)
+			return
 		}
 		tid, err := model.CreateTransaction(accountid, input.Amount, input.Description)
 		if err != nil {
 			handleError(w, 400, err)
+			return
 		}
 		returnJson(w, struct {
 			TransactionId string
@@ -137,6 +140,7 @@ func TransactionEntry(w http.ResponseWriter, r *http.Request) {
 		err := model.DeleteTransaction(accountid, model.TransactionId(tid))
 		if err != nil {
 			handleError(w, 400, err)
+			return
 		}
 		returnJson(w, struct {
 			TransactionId string
