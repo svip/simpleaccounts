@@ -33,6 +33,7 @@ func (m Money) String() string {
 type Transaction struct {
 	Time time.Time
 	Amount Money
+	Description string
 }
 
 type Account struct {
@@ -153,13 +154,13 @@ func GetAccount(id int) (Account, error) {
 	}
 }
 
-func CreateTransaction(accountid int, amount Money) error {
+func CreateTransaction(accountid int, amount Money, description string) error {
 	acc, err := GetAccount(accountid)
 	if err != nil {
 		return err
 	}
 	
-	acc.Transactions = append(acc.Transactions, Transaction{time.Now(), amount})
+	acc.Transactions = append(acc.Transactions, Transaction{time.Now(), amount, description})
 	
 	mutex.Lock()
 	database[accountid] = acc
@@ -180,6 +181,9 @@ func DeleteTransaction(accountid int, transid time.Time) error {
 		if trans.Time == transid {
 			id = i
 		}
+	}
+	if id == -1 {
+		return fmt.Errorf("No transaction with id (time) %x", transid)
 	}
 	
 	acc.Transactions = append(acc.Transactions[:id], acc.Transactions[id+1:]...)

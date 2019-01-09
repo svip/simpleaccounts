@@ -57,7 +57,7 @@ func TestCreateTransaction(t *testing.T) {
 	Init(true)
 	testacc := Account{1, "TestName", []Transaction{}}
 	CreateAccount(testacc.Name)
-	err := CreateTransaction(1, NewMoney(10.00))
+	err := CreateTransaction(1, NewMoney(10.00), "Text1")
 	if err != nil {
 		t.Error("Expected no error, got ", err)
 	}
@@ -68,14 +68,20 @@ func TestCreateTransaction(t *testing.T) {
 	if acc1.Transactions[0].Amount != NewMoney(10.00) {
 		t.Error("Expected an amount of 10.00, got ", acc1.Transactions[0].Amount)
 	}
+	if acc1.Transactions[0].Description != "Text1" {
+		t.Error("Expected description of Text1, got ", acc1.Transactions[0].Description)
+	}
 	if acc1.Sum() != NewMoney(10.00) {
 		t.Error("Expected a sum of 10.00, got ", acc1.Sum())
 	}
 	
-	CreateTransaction(1, NewMoney(20.00))
+	CreateTransaction(1, NewMoney(20.00), "Text2")
 	acc2, _ := GetAccount(1)
 	if acc2.Transactions[1].Amount != NewMoney(20.00) {
 		t.Error("Expected an amount of 20.00, got ", acc2.Transactions[1].Amount)
+	}
+	if acc2.Transactions[1].Description != "Text2" {
+		t.Error("Expected description of Text2, got ", acc2.Transactions[0].Description)
 	}
 	if acc2.Sum() != NewMoney(30.00) {
 		t.Error("Expected a sum of 30.00, got ", acc2.Sum())
@@ -86,7 +92,7 @@ func TestDeleteTransaction(t *testing.T) {
 	Init(true)
 	testacc := Account{1, "TestName", []Transaction{}}
 	CreateAccount(testacc.Name)
-	CreateTransaction(1, NewMoney(10.00))
+	CreateTransaction(1, NewMoney(10.00), "Text1")
 	
 	acc1, _ := GetAccount(1)
 	id := acc1.Transactions[0].Time
