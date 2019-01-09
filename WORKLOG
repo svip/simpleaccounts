@@ -16,3 +16,9 @@ exported functions for the purpose of the front facing API.
 
 Third the API.  It will be REST-like, but have no public documentation.  The
 documentation will be written in a README file.
+
+09/01 16:00
+I have not studied floats in Go enough, but to be on the save side.  Money
+balance and transactions are stored as integers (with the decimal mark moved
+two times to the right, e.g. 1.11 becomes 111), along with functions to display
+it the proper 'human' way.
