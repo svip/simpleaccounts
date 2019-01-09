@@ -1,8 +1,8 @@
 package model
 
 import (
-	"testing"
 	"db"
+	"testing"
 )
 
 func TestCreateAccount(t *testing.T) {
@@ -111,7 +111,7 @@ func TestDeleteTransaction(t *testing.T) {
 	err = DeleteTransaction(1, tid2)
 	if err != nil {
 		t.Error("Expected no error, got ", err)
-	} 
+	}
 	list3, _ := ListTransactions(1)
 	if len(list3) != 0 {
 		t.Error("Expected no transactions, got ", len(list3))

@@ -1,14 +1,14 @@
 package api
 
 import (
-	"net/http"
-	"model"
-	"strings"
 	"encoding/json"
-	"log"
-	"strconv"
-	"os"
 	"fmt"
+	"log"
+	"model"
+	"net/http"
+	"os"
+	"strconv"
+	"strings"
 )
 
 const LOGFILE = "access.log"
@@ -22,7 +22,7 @@ func doLog(r *http.Request) {
 		return
 	}
 	defer file.Close()
-	
+
 	file.Write([]byte(s))
 }
 
@@ -123,7 +123,7 @@ func TransactionEntry(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		var input struct {
 			Description string
-			Amount float64
+			Amount      float64
 		}
 		if err := dec.Decode(&input); err != nil {
 			handleError(w, 400, err)

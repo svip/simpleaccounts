@@ -9,14 +9,14 @@ import (
 type TransactionId string
 
 type ResultAccount struct {
-	Id int
+	Id   int
 	Name string
-	Sum float64
+	Sum  float64
 }
 
 type ResultTransaction struct {
-	Id TransactionId
-	Amount float64
+	Id          TransactionId
+	Amount      float64
 	Description string
 }
 
@@ -71,12 +71,11 @@ func DeleteTransaction(accountid int, transid TransactionId) error {
 	if err != nil {
 		return err
 	}
-	
+
 	err = db.DeleteTransaction(accountid, tid)
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }
-

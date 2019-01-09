@@ -2,13 +2,13 @@ package db
 
 import (
 	"encoding/json"
-	"time"
 	"fmt"
-	"sync"
-	"sort"
-	"os"
-	"log"
 	"io"
+	"log"
+	"os"
+	"sort"
+	"sync"
+	"time"
 )
 
 // TYPES
@@ -19,30 +19,30 @@ type Money int
 
 func NewMoney(a float64) Money {
 	// We'll just any further precision.  So yes, 1.505 becomes 1.50.
-	return Money(int(a*100))
+	return Money(int(a * 100))
 }
 
 func (m Money) Float() float64 {
-	return float64(m)/100
+	return float64(m) / 100
 }
 
 func (m Money) String() string {
 	return fmt.Sprintf("%0.2f", m.Float())
-} 
+}
 
 func (m Money) IsZero() bool {
 	return int(m) == 0
 }
 
 type Transaction struct {
-	Time time.Time
-	Amount Money
+	Time        time.Time
+	Amount      Money
 	Description string
 }
 
 type Account struct {
-	Id int
-	Name string
+	Id           int
+	Name         string
 	Transactions []Transaction
 }
 
@@ -65,6 +65,7 @@ func (a Account) String() string {
 var database map[int]Account
 var mutex = &sync.Mutex{} // Our general database mutex.
 var savetofile bool
+
 const FILENAME = "database.json"
 const LOGFILE = "database.log"
 
@@ -90,9 +91,9 @@ func doLog(task string, input string) {
 		log.Println("Error logging changes to database", err)
 	}
 	defer file.Close()
-	
+
 	msg := fmt.Sprintf("%s input: %s", task, input)
-	
+
 	file.Write([]byte(msg))
 }
 
@@ -132,18 +133,18 @@ func EmptyDatabase() {
 func CreateAccount(name string) Account {
 	// We are keeping it simple, with just incrementing IDs.
 	mutex.Lock()
-	newid := len(database)+1
-	
+	newid := len(database) + 1
+
 	account := Account{newid, name, []Transaction{}}
-	
+
 	database[newid] = account
-	
+
 	save()
-	
+
 	mutex.Unlock()
-	
+
 	doLog("CREATE ACCOUNT", name)
-	
+
 	return account
 }
 
@@ -179,15 +180,15 @@ func CreateTransaction(accountid int, amount Money, description string) (time.Ti
 	if err != nil {
 		return time.Now(), err
 	}
-	
+
 	mutex.Lock()
 	acc.Transactions = append(acc.Transactions, Transaction{time.Now(), amount, description})
 	database[accountid] = acc
 	save()
 	mutex.Unlock()
-	
+
 	doLog("CREATE TRANSACTION", fmt.Sprintf("%s %s", amount.String(), description))
-	
+
 	return t, nil
 }
 
@@ -196,7 +197,7 @@ func DeleteTransaction(accountid int, transid time.Time) error {
 	if err != nil {
 		return err
 	}
-	
+
 	id := -1
 	for i, trans := range acc.Transactions {
 		if trans.Time.Format(time.RFC3339Nano) == transid.Format(time.RFC3339Nano) {
@@ -206,16 +207,15 @@ func DeleteTransaction(accountid int, transid time.Time) error {
 	if id == -1 {
 		return fmt.Errorf("No transaction with id (time) %s", transid)
 	}
-	
+
 	acc.Transactions = append(acc.Transactions[:id], acc.Transactions[id+1:]...)
-	
+
 	mutex.Lock()
 	database[accountid] = acc
 	save()
 	mutex.Unlock()
-	
+
 	doLog("DELETE TRANSACTION", transid.Format(time.RFC3339Nano))
-	
+
 	return nil
 }
-
