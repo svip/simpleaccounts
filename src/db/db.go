@@ -88,7 +88,7 @@ func save() error {
 func Init(nofile bool) {
 	savetofile = !nofile
 	if savetofile {
-		file, err := os.Create(FILENAME)
+		file, err := os.OpenFile(FILENAME, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
 		if err != nil {
 			// If we cannot even open the file, then we might as well not run at all
 			log.Fatal(err)
@@ -98,6 +98,7 @@ func Init(nofile bool) {
 		mutex.Lock()
 		if err = dec.Decode(&database); err != nil {
 			if err == io.EOF {
+				log.Println("Empty database file, creating new.")
 				database = make(map[int]Account)
 			} else {
 				log.Fatal(err)
