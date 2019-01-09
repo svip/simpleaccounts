@@ -86,6 +86,15 @@ func TestCreateTransaction(t *testing.T) {
 	if acc2.Sum() != NewMoney(30.00) {
 		t.Error("Expected a sum of 30.00, got ", acc2.Sum())
 	}
+	
+	CreateTransaction(1, NewMoney(10.009), "Text3")
+	acc3, _ := GetAccount(1)
+	if acc3.Transactions[2].Amount != NewMoney(10.00) {
+		t.Error("Expected an amount of 10.00, got ", acc3.Transactions[2].Amount)
+	}
+	if acc3.Sum() != NewMoney(40.00) {
+		t.Error("Expected a sum of 40.00, got ", acc3.Sum())
+	}
 }
 
 func TestDeleteTransaction(t *testing.T) {
