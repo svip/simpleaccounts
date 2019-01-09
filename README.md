@@ -10,6 +10,8 @@ Simply start `main.go`:
 go run src/main.go
 ```
 
+Run from the same directory as the `media/`.
+
 It will run on port `:8080`.  It will save the database to a file called
 `database.json` in the same directory it is being run from.  If there is no
 file, or it is empty, it will initialise a new database without anything.
