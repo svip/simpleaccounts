@@ -29,3 +29,9 @@ one cannot predict the ID of an account, I am still chosing a simple
 incrementing integer for the ID.  The ID for transactions are their time stamps,
 which could also have problems if two transactions are created at exactly the
 same time.  But we can mitigate this by simply adding a nano second.
+
+09/01 17:51
+Since transactions are tied to a single account, they obviously should be able
+to be negative.  But a zero transaction (i.e. of 0.00) should not be allowed.
+The transactions are not a place to simply take notes.  This logic should be in
+the business, rather than the database.
