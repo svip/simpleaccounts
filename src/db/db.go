@@ -176,14 +176,12 @@ func GetAccount(id int) (Account, error) {
 
 func CreateTransaction(accountid int, amount Money, description string) (time.Time, error) {
 	acc, err := GetAccount(accountid)
-	t := time.Now()
 	if err != nil {
-		return t, err
+		return time.Now(), err
 	}
 	
-	acc.Transactions = append(acc.Transactions, Transaction{t, amount, description})
-	
 	mutex.Lock()
+	acc.Transactions = append(acc.Transactions, Transaction{time.Now(), amount, description})
 	database[accountid] = acc
 	save()
 	mutex.Unlock()
