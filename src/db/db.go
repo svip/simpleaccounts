@@ -22,12 +22,12 @@ func NewMoney(a float64) Money {
 	return Money(int(a*100))
 }
 
-func (m Money) ToFloat() float64 {
+func (m Money) Float() float64 {
 	return float64(m)/100
 }
 
 func (m Money) String() string {
-	return fmt.Sprintf("%0.2f", m.ToFloat())
+	return fmt.Sprintf("%0.2f", m.Float())
 } 
 
 type Transaction struct {
