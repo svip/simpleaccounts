@@ -92,7 +92,7 @@ func doLog(task string, input string) {
 	}
 	defer file.Close()
 
-	msg := fmt.Sprintf("%s input: %s", task, input)
+	msg := fmt.Sprintf("%s %s input: %s\n", time.Now().Format(time.RFC3339), task, input)
 
 	file.Write([]byte(msg))
 }
@@ -182,7 +182,8 @@ func CreateTransaction(accountid int, amount Money, description string) (time.Ti
 	}
 
 	mutex.Lock()
-	acc.Transactions = append(acc.Transactions, Transaction{time.Now(), amount, description})
+	t := time.Now()
+	acc.Transactions = append(acc.Transactions, Transaction{t, amount, description})
 	database[accountid] = acc
 	save()
 	mutex.Unlock()

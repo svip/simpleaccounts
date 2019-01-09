@@ -9,13 +9,14 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const LOGFILE = "access.log"
 
 func doLog(r *http.Request) {
-	s := fmt.Sprintf("%s %s\n", r.Method, r.URL)
-	log.Print(s)
+	s := fmt.Sprintf("%s %s %s\n", time.Now().Format(time.RFC3339), r.Method, r.URL)
+	fmt.Print(s)
 	file, err := os.OpenFile(LOGFILE, os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		log.Println("Error logging", err)
