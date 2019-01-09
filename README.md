@@ -14,6 +14,12 @@ It will run on port `:8080`.  It will save the database to a file called
 `database.json` in the same directory it is being run from.  If there is no
 file, or it is empty, it will initialise a new database without anything.
 
+Demo
+----
+
+Go to the root path on the server, e.g. `http://localhost:8080/`, which will
+present a demo of the five calls described below.
+
 Supported calls
 ---------------
 
