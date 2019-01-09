@@ -1,0 +1,18 @@
+DESIGN 09/01 15:40
+The implementation will be kept as simple as possible for the scope of the
+assignment.  We will try to avoid anything but standard library wherever
+possible.  The database will mainly be kept in memory with a JSON file serving
+as storage between runs.
+
+The structs of the database should allow us to almost serve the internal
+representation straight through the API.
+
+First I will implement the database, and exported functions to interact with the
+database.  Since it should be very simple, it can be done quickly, and allow us
+to build a test database structure for the purpose of testing.
+
+Second then I will implement the business logic against the database, and create
+exported functions for the purpose of the front facing API.
+
+Third the API.  It will be REST-like, but have no public documentation.  The
+documentation will be written in a README file.
